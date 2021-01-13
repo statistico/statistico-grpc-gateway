@@ -1,0 +1,383 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Statistico Strategy API",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "StrategyService"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/strategy/trade-search": {
+      "post": {
+        "summary": "Strategy Trade Search",
+        "description": "Perform a trade search for a Strategy",
+        "operationId": "StrategyService_StrategyTradeSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/statisticoStrategyTradeResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of statisticoStrategyTradeResponse"
+            }
+          },
+          "422": {
+            "description": "Invalid argument exception",
+            "schema": {
+              "$ref": "#/definitions/statisticoErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/statisticoErrorResponse"
+            }
+          },
+          "502": {
+            "description": "Bad gateway error",
+            "schema": {
+              "$ref": "#/definitions/statisticoErrorResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/statisticoStrategyTradeSearchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "StrategyService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "statisticoActionEnum": {
+      "type": "string",
+      "enum": [
+        "FOR",
+        "AGAINST"
+      ],
+      "default": "FOR"
+    },
+    "statisticoErrorResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "integer",
+          "description": "Response code",
+          "title": "code",
+          "pattern": "^[0-9]$"
+        },
+        "message": {
+          "type": "string",
+          "description": "Response message",
+          "title": "message",
+          "pattern": "^[a-zA-Z0-9]{1, 32}$"
+        }
+      }
+    },
+    "statisticoLineEnum": {
+      "type": "string",
+      "enum": [
+        "CLOSING",
+        "MAX"
+      ],
+      "default": "CLOSING"
+    },
+    "statisticoMeasureEnum": {
+      "type": "string",
+      "enum": [
+        "TOTAL",
+        "AVG"
+      ],
+      "default": "TOTAL"
+    },
+    "statisticoMetricEnum": {
+      "type": "string",
+      "enum": [
+        "GTE",
+        "LTE"
+      ],
+      "default": "GTE"
+    },
+    "statisticoMetricOperator": {
+      "type": "object",
+      "properties": {
+        "metric": {
+          "$ref": "#/definitions/statisticoMetricEnum"
+        },
+        "value": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "statisticoResultEnum": {
+      "type": "string",
+      "enum": [
+        "WIN",
+        "LOSE",
+        "DRAW",
+        "WIN_DRAW",
+        "LOSE_DRAW"
+      ],
+      "default": "WIN"
+    },
+    "statisticoResultFilter": {
+      "type": "object",
+      "properties": {
+        "team": {
+          "$ref": "#/definitions/statisticoTeamEnum"
+        },
+        "result": {
+          "$ref": "#/definitions/statisticoResultEnum"
+        },
+        "games": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "venue": {
+          "$ref": "#/definitions/statisticoVenueEnum"
+        }
+      }
+    },
+    "statisticoRunnerFilter": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "line": {
+          "$ref": "#/definitions/statisticoLineEnum"
+        },
+        "operators": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/statisticoMetricOperator"
+          }
+        }
+      }
+    },
+    "statisticoStatEnum": {
+      "type": "string",
+      "enum": [
+        "GOALS",
+        "SHOTS_ON_GOAL",
+        "XG"
+      ],
+      "default": "GOALS"
+    },
+    "statisticoStatFilter": {
+      "type": "object",
+      "properties": {
+        "stat": {
+          "$ref": "#/definitions/statisticoStatEnum"
+        },
+        "team": {
+          "$ref": "#/definitions/statisticoTeamEnum"
+        },
+        "action": {
+          "$ref": "#/definitions/statisticoActionEnum"
+        },
+        "games": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "measure": {
+          "$ref": "#/definitions/statisticoMeasureEnum"
+        },
+        "metric": {
+          "$ref": "#/definitions/statisticoMetricEnum"
+        },
+        "value": {
+          "type": "number",
+          "format": "float"
+        },
+        "venue": {
+          "$ref": "#/definitions/statisticoVenueEnum"
+        }
+      }
+    },
+    "statisticoStrategyTrade": {
+      "type": "object",
+      "properties": {
+        "marketName": {
+          "type": "string"
+        },
+        "runnerName": {
+          "type": "string"
+        },
+        "runnerPrice": {
+          "type": "number",
+          "format": "float"
+        },
+        "eventId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "competitionId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "seasonId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "eventDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "result": {
+          "$ref": "#/definitions/statisticoTradeResultEnum"
+        }
+      }
+    },
+    "statisticoStrategyTradeResponse": {
+      "type": "object",
+      "properties": {
+        "trades": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/statisticoStrategyTrade"
+          }
+        }
+      }
+    },
+    "statisticoStrategyTradeSearchRequest": {
+      "type": "object",
+      "properties": {
+        "market": {
+          "type": "string"
+        },
+        "marketRunnerFilter": {
+          "$ref": "#/definitions/statisticoRunnerFilter"
+        },
+        "competitionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        },
+        "seasonIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        },
+        "dateFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dateTo": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resultFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/statisticoResultFilter"
+          }
+        },
+        "statFilters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/statisticoStatFilter"
+          }
+        }
+      }
+    },
+    "statisticoTeamEnum": {
+      "type": "string",
+      "enum": [
+        "HOME_TEAM",
+        "AWAY_TEAM"
+      ],
+      "default": "HOME_TEAM"
+    },
+    "statisticoTradeResultEnum": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "FAIL"
+      ],
+      "default": "SUCCESS"
+    },
+    "statisticoVenueEnum": {
+      "type": "string",
+      "enum": [
+        "HOME",
+        "AWAY",
+        "HOME_AWAY"
+      ],
+      "default": "HOME"
+    }
+  },
+  "externalDocs": {
+    "description": "gRPC-gateway for Statistico internal services",
+    "url": "https://github.com/statistico/statistico-grpc-gateway"
+  }
+}

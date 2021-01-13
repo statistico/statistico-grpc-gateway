@@ -1,0 +1,22 @@
+version: "3.3"
+services:
+  statistico-grpc-gateway-strategy:
+    build:
+      dockerfile: ./.docker/Dockerfile
+      context: .
+    environment:
+      STATISTICO_STRATEGY_HOST: statistico-data-grpc
+      STATISTICO_STRATEGY_PORT: 50051
+    networks:
+      - statistico-grpc-gateway_default
+      - statistico_internal
+    ports:
+      - "8080:8080"
+    tty: true
+    command: ["./strategy"]
+
+networks:
+  statistico-grpc-gateway_default:
+    external: false
+  statistico_internal:
+    external: true
