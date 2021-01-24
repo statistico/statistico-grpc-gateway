@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package statistico;
+
+option go_package = "github.com/statistico/statistico-proto;statistico";
+
+enum ActionEnum {
+  FOR = 0;
+  AGAINST = 1;
+}
+
+enum LineEnum {
+  CLOSING = 0;
+  MAX = 1;
+}
+
+enum MeasureEnum {
+  TOTAL = 0;
+  AVG = 1;
+}
+
+enum MetricEnum {
+  GTE = 0;
+  LTE = 1;
+}
+
+enum ResultEnum {
+  WIN = 0;
+  LOSE = 1;
+  DRAW = 2;
+  WIN_DRAW = 3;
+  LOSE_DRAW = 4;
+}
+
+enum StatEnum {
+  GOALS = 0;
+  SHOTS_ON_GOAL = 1;
+  XG = 2;
+}
+
+enum TeamEnum {
+  HOME_TEAM = 0;
+  AWAY_TEAM = 1;
+}
+enum TradeResultEnum {
+  SUCCESS = 0;
+  FAIL = 1;
+}
+
+enum VenueEnum {
+  HOME = 0;
+  AWAY = 1;
+  HOME_AWAY = 2;
+}

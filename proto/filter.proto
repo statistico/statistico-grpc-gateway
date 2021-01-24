@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package statistico;
+
+option go_package = "github.com/statistico/statistico-proto;statistico";
+
+import "enum.proto";
+
+message ResultFilter {
+  TeamEnum team = 1;
+  ResultEnum result = 2;
+  uint32 games = 3;
+  VenueEnum venue = 4;
+}
+
+message StatFilter {
+  StatEnum stat = 1;
+  TeamEnum team = 2;
+  ActionEnum action = 3;
+  uint32 games = 4;
+  MeasureEnum measure = 5;
+  MetricEnum metric = 6;
+  float value = 7;
+  VenueEnum venue = 8;
+}
+
+message RunnerFilter {
+  string name = 1;
+  LineEnum line = 2;
+  repeated MetricOperator operators = 3;
+}
+
+message MetricOperator {
+  MetricEnum metric = 1;
+  float value = 2;
+}

@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package statistico;
+
+import "enum.proto";
+import "filter.proto";
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/statistico/statistico-proto;statistico";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Statistico Strategy API",
+    version: "1.0";
+  };
+  external_docs: {
+    url: "https://github.com/statistico/statistico-grpc-gateway";
+    description: "gRPC-gateway for Statistico internal services";
+  }
+  schemes: HTTPS;
+  consumes: "application/json";
+  produces: "application/json";
+  responses: {
+    key: "422";
+    value: {
+      description: "Invalid argument exception";
+      schema: {
+        json_schema: {
+          ref: ".statistico.ErrorResponse";
+        }
+      }
+    }
+  }
+  responses: {
+    key: "500";
+    value: {
+      description: "Internal server error";
+      schema: {
+        json_schema: {
+          ref: ".statistico.ErrorResponse";
+        }
+      }
+    }
+  }
+  responses: {
+    key: "502";
+    value: {
+      description: "Bad gateway error";
+      schema: {
+        json_schema: {
+          ref: ".statistico.ErrorResponse";
+        }
+      }
+    }
+  }
+};
+
+service StrategyService {
+  rpc StrategyTradeSearch(StrategyTradeSearchRequest) returns (stream StrategyTrade) {
+    option(google.api.http) = {
+      post: "/v1/strategy/trade-search",
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Strategy Trade Search"
+      description: "Perform a trade search for a Strategy",
+    };
+  }
+}
+
+message StrategyTradeSearchRequest {
+  string market = 1;
+  RunnerFilter market_runner_filter = 2;
+  repeated uint64 competition_ids = 3;
+  repeated uint64 season_ids = 4;
+  google.protobuf.Timestamp dateFrom = 5;
+  google.protobuf.Timestamp dateTo = 6;
+  repeated ResultFilter result_filters = 7;
+  repeated StatFilter stat_filters = 8;
+}
+
+message StrategyTrade {
+  string market_name = 1;
+  string runner_name = 2;
+  float runner_price = 3;
+  uint64 event_id = 4;
+  uint64 competition_id = 5;
+  uint64 season_id = 6;
+  google.protobuf.Timestamp event_date = 7;
+  TradeResultEnum result = 8;
+}
+
+message ErrorResponse {
+  int32 code = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    pattern: "^[0-9]$",
+    title: "code",
+    description: "Response code",
+    format: "integer"
+  }];
+  string message = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    pattern: "^[a-zA-Z0-9]{1, 32}$",
+    title: "message",
+    description: "Response message"
+  }];
+}
