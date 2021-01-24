@@ -44,7 +44,7 @@ func (c *strategyServiceClient) StrategyTradeSearch(ctx context.Context, in *Str
 }
 
 type StrategyService_StrategyTradeSearchClient interface {
-	Recv() (*StrategyTradeResponse, error)
+	Recv() (*StrategyTrade, error)
 	grpc.ClientStream
 }
 
@@ -52,8 +52,8 @@ type strategyServiceStrategyTradeSearchClient struct {
 	grpc.ClientStream
 }
 
-func (x *strategyServiceStrategyTradeSearchClient) Recv() (*StrategyTradeResponse, error) {
-	m := new(StrategyTradeResponse)
+func (x *strategyServiceStrategyTradeSearchClient) Recv() (*StrategyTrade, error) {
+	m := new(StrategyTrade)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -97,7 +97,7 @@ func _StrategyService_StrategyTradeSearch_Handler(srv interface{}, stream grpc.S
 }
 
 type StrategyService_StrategyTradeSearchServer interface {
-	Send(*StrategyTradeResponse) error
+	Send(*StrategyTrade) error
 	grpc.ServerStream
 }
 
@@ -105,7 +105,7 @@ type strategyServiceStrategyTradeSearchServer struct {
 	grpc.ServerStream
 }
 
-func (x *strategyServiceStrategyTradeSearchServer) Send(m *StrategyTradeResponse) error {
+func (x *strategyServiceStrategyTradeSearchServer) Send(m *StrategyTrade) error {
 	return x.ServerStream.SendMsg(m)
 }
 

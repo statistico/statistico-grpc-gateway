@@ -5,7 +5,7 @@ services:
       dockerfile: ./.docker/Dockerfile
       context: .
     environment:
-      STATISTICO_STRATEGY_HOST: statistico-data-grpc
+      STATISTICO_STRATEGY_HOST: statistico-strategy-grpc
       STATISTICO_STRATEGY_PORT: 50051
     networks:
       - statistico-grpc-gateway_default

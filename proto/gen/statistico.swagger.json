@@ -31,13 +31,13 @@
               "type": "object",
               "properties": {
                 "result": {
-                  "$ref": "#/definitions/statisticoStrategyTradeResponse"
+                  "$ref": "#/definitions/statisticoStrategyTrade"
                 },
                 "error": {
                   "$ref": "#/definitions/rpcStatus"
                 }
               },
-              "title": "Stream result of statisticoStrategyTradeResponse"
+              "title": "Stream result of statisticoStrategyTrade"
             }
           },
           "422": {
@@ -291,17 +291,6 @@
         },
         "result": {
           "$ref": "#/definitions/statisticoTradeResultEnum"
-        }
-      }
-    },
-    "statisticoStrategyTradeResponse": {
-      "type": "object",
-      "properties": {
-        "trades": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/statisticoStrategyTrade"
-          }
         }
       }
     },

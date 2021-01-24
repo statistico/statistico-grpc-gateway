@@ -58,7 +58,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
 };
 
 service StrategyService {
-  rpc StrategyTradeSearch(StrategyTradeSearchRequest) returns (stream StrategyTradeResponse) {
+  rpc StrategyTradeSearch(StrategyTradeSearchRequest) returns (stream StrategyTrade) {
     option(google.api.http) = {
       post: "/v1/strategy/trade-search",
       body: "*"
@@ -90,10 +90,6 @@ message StrategyTrade {
   uint64 season_id = 6;
   google.protobuf.Timestamp event_date = 7;
   TradeResultEnum result = 8;
-}
-
-message StrategyTradeResponse {
-  repeated StrategyTrade trades = 1;
 }
 
 message ErrorResponse {
