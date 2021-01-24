@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package statistico;
 
-option go_package = "github.com/statistico/statistico-grpc-gateway;statistico";
+option go_package = "github.com/statistico/statistico-proto;statistico";
 
 import "enum.proto";
 
